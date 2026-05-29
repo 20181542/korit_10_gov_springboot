@@ -7,8 +7,18 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public MessageSender messageSender() {
+    public EmailSender emailSender() {
+        return new EmailSender();
+    }
 
+    @Bean
+    public SmsSender smsSender() {
+        return new SmsSender();
+    }
+
+
+    @Bean
+    public MessageSender messageSender() {
         return new EmailSender();
     }
 
