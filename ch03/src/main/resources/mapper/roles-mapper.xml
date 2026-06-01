@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.korit.ch03.mapper.RolesMapper">
+
+    <insert id="insert">
+        insert into roles values
+        (default, #{roleName}, now(), now())
+    </insert>
+    <select id="selectAll" resultType="com.korit.ch03.entity.Role">
+        select
+            id,
+            role_name,
+            created_at,
+            updated_at
+        from
+            roles
+        order by
+            id
+    </select>
+    <select id="selectById" resultType="com.korit.ch03.entity.Role">
+        select
+            id,
+            role_name,
+            created_at,
+            updated_at
+        from
+            roles
+        where
+            id = #{roleId}
+        order by
+            id
+    </select>
+    <select id="selectByUsername" resultType="com.korit.ch03.entity.Role">
+        select
+            id,
+            role_name,
+            created_at,
+            updated_at
+        from
+            roles
+        where
+            role_name= #{roleName}
+        order by
+            id
+    </select>
+</mapper>
