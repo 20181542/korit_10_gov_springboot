@@ -20,7 +20,7 @@ public class UserService {
     private final UserRoleMapper userRoleMapper;
 
     public UserResp create(UserReqCreate dto) {
-        User foundUser = userMapper.selectByUsername((dto.getUsername()));
+        User foundUser = userMapper.selectByUsername(dto.getUsername());
 
         if (foundUser != null){
             throw new DuplicatedException("username이 중복 입니다.", "username", dto.getUsername());
@@ -57,6 +57,9 @@ public class UserService {
                     .username(user.getUsername())
                     .name(user.getName())
                     .email(user.getEmail())
+                    .roles(user.getUserRoles().stream()
+                            .map(userRole -> new UserResp.Role((userRole.getRole().getId()), (userRole.getRole().getRoleName())))
+                            .toList())
                     .build())
                 .toList();
     }
