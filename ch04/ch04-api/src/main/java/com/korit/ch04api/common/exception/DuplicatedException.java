@@ -1,19 +1,17 @@
-package com.korit.ch03.common.exception;
-
+package com.korit.ch04api.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties({"cause", "localizedMessage", "stackTrace", "suppressed"})
 public class DuplicatedException extends RuntimeException{
     private String fieldName;
-    private Object value;
+    private String fieldValue;
 
-    public DuplicatedException(String message, String fieldName, Object value) {
+    public DuplicatedException(String message, String fieldName, String fieldValue) {
         super(message);
         this.fieldName = fieldName;
-        this.value = value;
+        this.fieldValue = fieldValue;
     }
 }
