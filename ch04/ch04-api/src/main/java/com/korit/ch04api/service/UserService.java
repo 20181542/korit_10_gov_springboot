@@ -6,6 +6,7 @@ import com.korit.ch04api.dto.CreateResponse;
 import com.korit.ch04api.entity.User;
 import com.korit.ch04api.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public CreateResponse authCreate(AuthUserCreateRequest dto) {
         User foundUser =userMapper.selectByUsername(dto.getUsername());
@@ -22,7 +24,7 @@ public class UserService {
             throw new DuplicatedException("username이 중복입니다.", "username", dto.getUsername());
         }
 
-        User userEntity = dto.toUser();
+        User userEntity = dto.toUser(passwordEncoder);
         userMapper.insert(userEntity);
 
 

@@ -27,7 +27,7 @@
     <select id="selectByUsername" resultMap="UserResultMap" >
         select
             u.id as user_id,
-            u,username,
+            u.username,
             u.password,
             u.name,
             u.email,
@@ -46,7 +46,7 @@
     <select id="selectById" resultMap="UserResultMap">
         select
             u.id as user_id,
-            u,username,
+            u.username,
             u.password,
             u.name,
             u.email,
