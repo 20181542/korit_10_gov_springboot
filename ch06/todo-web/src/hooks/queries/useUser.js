@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
 import { getMeRequest } from "../../api/userApis";
 
+
 export const useMe = () => {
     const accessToken = localStorage.getItem("accessToken")
     return useQuery({
-        queryKey: ["me", accessToken ],
-        queryFn: () => getMeRequest(),
+        queryKey: ["me", accessToken],
+        queryFn: getMeRequest,
         retry: 0,
         staleTime: 6000 * 10, //캐싱시간 (10분마다)
         gcTime: 6000 * 10,
