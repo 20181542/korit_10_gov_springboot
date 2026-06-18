@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getCategoriesRequest, getNotCompletedCount } from "../../api/categoryApis"
+import { getCategoriesRequest, getCategoryColorsAndIcons, getNotCompletedCount } from "../../api/categoryApis"
 
 export const useCategories = () => {
     

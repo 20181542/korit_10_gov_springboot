@@ -3,20 +3,22 @@ import TextButton from "../../components/buttons/TextButton/TextButton";
 import Header from "../../components/Header/Header";
 import { useMe } from "../../hooks/queries/useUser";
 import * as s from "./styles";
-import { useCategories, useCategoryNotCompletedCount } from "../../hooks/queries/useCategory";
+import { useCategories, useCategoryColorsAndIcons, useCategoryNotCompletedCount } from "../../hooks/queries/useCategory";
 import { useState } from "react";
-import Modal from "../Modal/Modal";
+import { useBottomModalStore } from "../../store/modalStore";
 
 function Home() {
     const meQuery = useMe();
     const categoiesQuery = useCategories();
     const categoryNotCompletedCountQuery = useCategoryNotCompletedCount();
-    const [modalOpen, setModalOpen] = useState(false);
 
-    const modalOpenHandleOnClick = () => {
-        setModalOpen(true)
+    const setModalOpen = useBottomModalStore((state) => (state.setOpen))
+    const setModalCildren = useBottomModalStore((state) => state.setChildren);
+
+    const handleCategoryRegisterOnClick = () => {
+        setModalOpen(true);
+        setModalCildren(<CategoryRegister />);
     }
-
 
     return (
         <div css={s.layout}>
@@ -87,7 +89,7 @@ function Home() {
                                                             .notCompletedCount || "0"
                                                     }
                                                 </span>
-                                                <svg data-dc-tpl="128" width="8" height="13" viewBox="0 0 8 13" fill="none" style={{ "marginLeft": "4px" }}><path data-dc-tpl="129" d="M1 1l6 5.5L1 12" stroke="#C7C7CC" strokeWidth="2" strokelinecap="round" strokeLinejoin="round"></path></svg>
+                                                <svg data-dc-tpl="128" width="8" height="13" viewBox="0 0 8 13" fill="none" style={{ "marginLeft": "4px" }}><path data-dc-tpl="129" d="M1 1l6 5.5L1 12" stroke="#C7C7CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
                                             </div>
                                         </Link>
                                     </li>
@@ -95,9 +97,7 @@ function Home() {
                         }
                     </ul>
                     <div>
-                        <TextButton  onClick={modalOpenHandleOnClick}>새로운 목록 추가</TextButton>
-                        {modalOpen === true ? <Modal /> : null}
-
+                        <TextButton onClick={handleCategoryRegisterOnClick}>새로운 목록 추가</TextButton>
                     </div>
                 </div>
             </div>
@@ -106,3 +106,49 @@ function Home() {
 }
 
 export default Home;
+
+function CategoryRegister() {
+    const colorsAndIconsQuery = useCategoryColorsAndIcons();
+    const [newCategory, setNewCategory] = useState({
+        name: "",
+        colorId: "",
+        iconId: "",
+    });
+    const colors = colorsAndIconsQuery.data?.body.categoryColors ?? [];
+    const icons = colorsAndIconsQuery.data?.body.categoryIcons ?? [];
+
+    const selected = {
+        color: colors.find(c => c.id === newCategory.colorId)?.color,
+        icon: icons.find(i => i.id === newCategory.iconId)?.icon,
+    }
+
+    return <div>
+        <header>
+            <h3>새로운 목록</h3>
+            <div css={s.categoryIcon(selected.color)}>{selected.icon}</div>
+        </header>
+        <div>
+            <input type="text" />
+        </div>
+        <div>
+            {
+                colors.map(c => (
+                    <label key={c.id}>
+                        <input type="radio" />
+                        {c.color}
+                    </label>
+                ))
+            }
+        </div>
+        <div>
+            {
+                icons.map(i => (
+                    <label key={i.id}>
+                        <input type="radio" />
+                        {i.icon}
+                    </label>
+                ))
+            }
+        </div>
+    </div>
+}
