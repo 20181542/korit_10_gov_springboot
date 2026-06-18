@@ -1,10 +1,10 @@
 import * as s from "./styles";
 
-function TextButton({chlidren, onClick, disabled, weight}) {
+function TextButton({ children, onClick, disabled, weight }) {
 
     return (
-        <button css={s.button(weight)} onClick={onclick} disabled={disabled}>
-            {chlidren}
+        <button css={s.button(weight)} onClick={onClick} disabled={disabled}>
+            {children}
         </button>
     )
 }

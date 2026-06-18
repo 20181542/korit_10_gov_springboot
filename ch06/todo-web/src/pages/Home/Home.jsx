@@ -4,18 +4,25 @@ import Header from "../../components/Header/Header";
 import { useMe } from "../../hooks/queries/useUser";
 import * as s from "./styles";
 import { useCategories, useCategoryNotCompletedCount } from "../../hooks/queries/useCategory";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
 
 function Home() {
     const meQuery = useMe();
     const categoiesQuery = useCategories();
     const categoryNotCompletedCountQuery = useCategoryNotCompletedCount();
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const modalOpenHandleOnClick = () => {
+        setModalOpen(true)
+    }
 
 
     return (
         <div css={s.layout}>
             <Header>
                 <h2 css={s.title}>ReMind</h2>
-                <div css={s.profile(meQuery.data?.body.profileImage)}></div>
+                <div css={s.profile(meQuery.data?.body?.profileImage)}></div>
             </Header>
             <div css={s.top}>
                 <div css={s.leftup}>
@@ -87,7 +94,11 @@ function Home() {
                                 ))
                         }
                     </ul>
-                    <TextButton>새로운 목록 추가</TextButton>
+                    <div>
+                        <TextButton  onClick={modalOpenHandleOnClick}>새로운 목록 추가</TextButton>
+                        {modalOpen === true ? <Modal /> : null}
+
+                    </div>
                 </div>
             </div>
         </div>

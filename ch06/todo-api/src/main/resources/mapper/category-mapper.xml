@@ -2,102 +2,138 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace= "com.korit.todoapi.mapper.CategoryMapper" >
+
+<mapper namespace="com.korit.todoapi.mapper.CategoryMapper">
+
+    <resultMap id="CategoryIconResultMap" type="CategoryIcon">
+        <id property="id" column="category_icon_id" />
+        <result property="icon" column="icon" />
+    </resultMap>
+
+    <resultMap id="CategoryColorResultMap" type="CategoryColor">
+        <id property="id" column="category_color_id"/>
+        <result property="color" column="color" />
+    </resultMap>
+
+    <resultMap id="CategoryResultMap" type="Category">
+        <id property="id" column="category_id"/>
+        <result property="userId" column="user_id" />
+        <result property="name" column="name" />
+        <result property="colorId" column="color_id" />
+        <result property="iconId" column="icon_id" />
+        <association property="categoryColor" resultMap="CategoryColorResultMap" />
+        <association property="categoryIcon" resultMap="CategoryIconResultMap" />
+    </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into categories values
-        (default, #{userId}, #{name}, #{color}, #{icon}, #{createdAt})
+        (default, #{userId}, #{name}, #{colorId}, #{iconId}, #{createdAt})
     </insert>
+
     <update id="update">
         update
-            categories
+        categories
         set
-            name = #[name},
-            color = #{color},
-            icon = #{icon}
+        name = #[name},
+        color_id = #{colorId},
+        icon_id = #{iconId}
         where
-            id = #{id}
+        id = #{id}
     </update>
+
     <delete id="delete">
         delete
         from
-            categories
+        categories
         where
-            id = #{id}
+        id = #{id}
     </delete>
 
-    <select id="selectById" resultType="com.korit.todoapi.entity.Category">
+    <select id="countNotCompletedByUserId" resultType="CategoryCompletionCount">
         select
-            id,
-            user_id,
-            name,
-            color,
-            icon,
-            created_at
+        ctgr.id,
+        count(*) as total_count,
+        count(if(todos.is_completed = 0, 1, null)) as not_completed_count
         from
-            categories
+        categories ctgr
+        left join todos on todos.category_id = ctgr.id
         where
-            id = #{catgoryId}
-    </select>
-    <select id="selectByNameAndUserId" resultType="com.korit.todoapi.entity.Category">
-        select
-            id,
-            user_id,
-            name,
-            color,
-            icon,
-            created_at
-        from
-            categories
-        where
-            name = #{name}
-            and user_id = #{userId}
-    </select>
-    <select id="countNotCompletedByUserId" resultType="com.korit.todoapi.entity.CategoryCompletionCount">
-        select
-            ctgr.id,
-            count(*) as total_count,
-            count(if(todos.is_completed = 0, 1, null)) as not_completed_count
-        from
-            categories ctgr
-            left join todos on todos.category_id = ctgr.id
-        where
-            ctgr.user_id = #{userId}
+        ctgr.user_id = #{userId}
         group by
-            ctgr.id
+        ctgr.id
         order by
-            ctgr.id
+        ctgr.id
     </select>
-    <select id="selectAllByUserId" resultType="com.korit.todoapi.entity.Category">
-        select
-            id,
-            user_id,
-            name,
-            color,
-            icon,
-            created_at
-        from
-            categories
-        where
-            user_id = #{userId}
 
-    </select>
-    <select id="selectAllCategoryColor" resultType="com.korit.todoapi.entity.CategoryColor">
+    <select id="selectById" resultType="Category">
         select
-            id,
-            color
+        id,
+        user_id,
+        name,
+        color_id,
+        icon_id,
+        created_at
         from
-            category_colors
-        order by
-            id
+        categories
+        where
+        id = #{categoryId}
     </select>
-    <select id="selectAllCategoryIcon" resultType="com.korit.todoapi.entity.CategoryIcon">
+
+    <select id="selectByNameAndUserId" resultType="Category">
         select
-            id,
-            icon
+        id,
+        user_id,
+        name,
+        color_id,
+        icon_id,
+        created_at
         from
-            category_icons
-        order by
-            id
+        categories
+        where
+        name = #{name}
+        and user_id = #{userId}
     </select>
+
+    <select id="selectAllByUserId" resultMap="CategoryResultMap">
+        select
+        ctgr.id as category_id,
+        ctgr.user_id,
+        ctgr.name,
+        ctgr.color_id,
+        ctgr.icon_id,
+        ctgr.created_at,
+
+        ctgrc.id as category_color_id,
+        ctgrc.color,
+
+        ctgri.id as category_icon_id,
+        ctgri.icon
+        from
+        categories ctgr
+        left join category_colors ctgrc on ctgrc.id = ctgr.color_id
+        left join category_icons ctgri on ctgri.id = ctgr.icon_id
+        where
+        ctgr.user_id = #{userId}
+    </select>
+
+    <select id="selectAllCategoryColor" resultType="CategoryColor">
+        select
+        id,
+        color
+        from
+        category_colors
+        order by
+        id
+    </select>
+
+    <select id="selectAllCategoryIcon" resultType="CategoryIcon">
+        select
+        id,
+        icon
+        from
+        category_icons
+        order by
+        id
+    </select>
+
 </mapper>
