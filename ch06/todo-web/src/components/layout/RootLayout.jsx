@@ -38,9 +38,9 @@ function RootLayout({ children }) {
                         <circle data-dc-tpl="16" cx="8" cy="10.5" r="1.5" fill="#1C1C1E"></circle>
                     </svg>
                     <svg data-dc-tpl="17" width="26" height="12" viewBox="0 0 26 12" fill="none">
-                        <rect data-dc-tpl="18" x="0.5" y="0.5" width="22" height="11" rx="3.5" stroke="#1C1C1E" stroke-opacity="0.35"></rect>
+                        <rect data-dc-tpl="18" x="0.5" y="0.5" width="22" height="11" rx="3.5" stroke="#1C1C1E" strokeOpacity="0.35"></rect>
                         <rect data-dc-tpl="19" x="2" y="2" width="16" height="8" rx="2" fill="#1C1C1E"></rect>
-                        <path data-dc-tpl="20" d="M24 4.5v3a1.5 1.5 0 000-3z" fill="#1C1C1E" fill-opacity="0.4"></path>
+                        <path data-dc-tpl="20" d="M24 4.5v3a1.5 1.5 0 000-3z" fill="#1C1C1E" fillOpacity="0.4"></path>
                     </svg>
                 </div>
             </header>

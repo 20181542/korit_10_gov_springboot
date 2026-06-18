@@ -82,4 +82,22 @@
             user_id = #{userId}
 
     </select>
+    <select id="selectAllCategoryColor" resultType="com.korit.todoapi.entity.CategoryColor">
+        select
+            id,
+            color
+        from
+            category_colors
+        order by
+            id
+    </select>
+    <select id="selectAllCategoryIcon" resultType="com.korit.todoapi.entity.CategoryIcon">
+        select
+            id,
+            icon
+        from
+            category_icons
+        order by
+            id
+    </select>
 </mapper>

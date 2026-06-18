@@ -2,6 +2,7 @@ package com.korit.todoapi.service;
 
 import com.korit.todoapi.common.exception.DuplicatedException;
 import com.korit.todoapi.dto.CreateResponse;
+import com.korit.todoapi.dto.category.CategoryColorsAndIconsResponse;
 import com.korit.todoapi.dto.category.CategoryCreateRequest;
 import com.korit.todoapi.dto.category.CategoryModifyRequest;
 import com.korit.todoapi.dto.category.CategoryResponse;
@@ -19,13 +20,12 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     private void checkDuplicated(String categoryName, Long userId) {
-        Category category = categoryMapper.selectByNameAndUserId(categoryName,userId);
+        Category category = categoryMapper.selectByNameAndUserId(categoryName, userId);
         if (category != null) throw new DuplicatedException("이미 존재하는 카테고리입니다.", "name", categoryName);
     }
 
     public CreateResponse create(CategoryCreateRequest dto) {
         checkDuplicated(dto.getName(), dto.getUserId());
-
         Category category = dto.toCategory();
         categoryMapper.insert(category);
 
@@ -43,6 +43,7 @@ public class CategoryService {
     }
 
     public void modify(CategoryModifyRequest dto) {
+        checkDuplicated(dto.getName(), dto.getUserId());
         categoryMapper.update(dto.toCategory());
     }
 
@@ -52,6 +53,13 @@ public class CategoryService {
 
     public List<CategoryCompletionCount> getNotCompletedCount(Long userId) {
         return categoryMapper.countNotCompletedByUserId(userId);
+    }
+
+    public CategoryColorsAndIconsResponse getColorsAndIcons() {
+        return CategoryColorsAndIconsResponse.builder()
+                .categoryColors(categoryMapper.selectAllCategoryColor())
+                .categoryIcons(categoryMapper.selectAllCategoryIcon())
+                .build();
     }
 
 }
