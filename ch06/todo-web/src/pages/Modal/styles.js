@@ -13,7 +13,7 @@ export const modal = css`
 `;
 
 export const bottomSheet = css`
-    width: 100%;
+    width: 50%;
     background-color: #ffffff;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
