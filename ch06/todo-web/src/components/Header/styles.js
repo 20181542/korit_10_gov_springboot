@@ -10,4 +10,10 @@ export const layout = css`
     height: 64px;
     background-color: #ffffff;
 
+    & > h4 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
 `

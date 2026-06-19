@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { getCategoriesRequest, getCategoryColorsAndIcons, getNotCompletedCount } from "../../api/categoryApis"
 
 export const useCategories = () => {
@@ -21,11 +21,14 @@ export const useCategoryColorsAndIcons = () => {
 }
 
 export const useCategoryNotCompletedCount = () => {
+    const queryClient = useQueryClient();
+    const categoriesData = queryClient.getQueriesData(["categories"])
 
     return useQuery({
         queryKey: ["categoryNotCompletedCount"],
         queryFn: getNotCompletedCount,
         staleTime: 1000 * 60 * 60 * 24,
         gcTime: 1000 * 60 * 60 * 24,
+        enabled: !!categoriesData,
     });
 }

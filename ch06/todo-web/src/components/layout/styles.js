@@ -40,6 +40,7 @@ export const main = css`
     width: 100%;
     flex-grow: 1;
     background-color: #dbdbdb;
+    
 
 `;
 
