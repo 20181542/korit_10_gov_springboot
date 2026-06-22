@@ -21,9 +21,9 @@ function Home() {
     const [isEdit, setEdit] = useState(false);
 
 
-    const [deleteCategoryId, setDeleteCategoryId] =useState("");
+    const [deleteCategoryId, setDeleteCategoryId] = useState("");
 
-    
+
 
     const handleChangeModeOnClick = (state) => {
         setEdit(state);
@@ -35,7 +35,21 @@ function Home() {
     }
 
     const handleCategoryDeleteOnClick = (e, id) => {
-        categoryDeleteMutation.mutateAsync(id);
+        // categoryDeleteMutation.mutateAsync(id);
+        // 1. 클릭 이벤트가 부모 요소나 주변 Link로 퍼지는 것을 완전히 차단합니다.
+    e.stopPropagation(); 
+    e.preventDefault();
+
+    // 2. 혹시나 id가 진짜 없는 경우 요청을 보내지 않도록 방어막을 칩니다.
+    if (!id) {
+        console.error("삭제할 카테고리 ID가 존재하지 않습니다!");
+        return;
+    }
+
+    console.log("삭제 요청을 보냅니다. ID:", id);
+    
+    // 3. mutateAsync 대신 일반 mutate를 사용하거나 await를 붙여줍니다.
+    categoryDeleteMutation.mutate(id);
     }
 
     return (
@@ -49,23 +63,23 @@ function Home() {
                 <div css={s.boxGroup}>
 
                 </div>
-                <div css={s.listGroup}>
+                <div css={s.listGroup(isEdit)}>
                     <header>
                         <h3>나의 목록</h3>
                         {
                             isEdit
-                            ? <TextButton onClick={() => handleChangeModeOnClick(false)}>완료</TextButton>
-                            : <TextButton onClick={() => handleChangeModeOnClick(true)}>편집</TextButton>
+                                ? <TextButton onClick={() => handleChangeModeOnClick(false)}>완료</TextButton>
+                                : <TextButton onClick={() => handleChangeModeOnClick(true)}>편집</TextButton>
                         }
-                        
+
                     </header>
                     <ul>
                         {
                             categoiesQuery.isLoading
                                 ? <></>
-                                : categoiesQuery.data?.body?.map(category => (
+                                : categoiesQuery.data.body.map(category => (
                                     <li key={category.categoryId}>
-                                        <div onClick={() => handleCategoryDeleteOnClick(e, category.categoryId)}>
+                                        <div onClick={(e) => handleCategoryDeleteOnClick(e, category.categoryId)}>
                                             <div>
                                                 <svg data-dc-tpl="122" width="10" height="2" viewBox="0 0 10 2" fill="none"><rect data-dc-tpl="123" width="10" height="2" rx="1" fill="white"></rect></svg>
                                             </div>
@@ -76,12 +90,13 @@ function Home() {
                                             <div css={s.categoryCount}>
                                                 <span>
                                                     {
-                                                        categoryNotCompletedCountQuery.isLoading
-                                                            ? "0"
-                                                            : categoryNotCompletedCountQuery.data?.body?.find(count => count.id === category.categoryId)?.notCompletedCount || "0"
+                                                        categoryNotCompletedCountQuery.isLoading ||
+                                                        categoryNotCompletedCountQuery.data.body
+                                                            .find(count => count.id === category.categoryId)
+                                                            ?.notCompletedCount || "0"
                                                     }
                                                 </span>
-                                                <svg data-dc-tpl="128" width="8" height="13" viewBox="0 0 8 13" fill="none" style={{ "marginLeft": "4px" }}><path data-dc-tpl="129" d="M1 1l6 5.5L1 12" stroke="#C7C7CC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+                                                <svg data-dc-tpl="128" width="8" height="13" viewBox="0 0 8 13" fill="none" style={{ "margin-left": "4px" }}><path data-dc-tpl="129" d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                                             </div>
                                         </Link>
                                     </li>

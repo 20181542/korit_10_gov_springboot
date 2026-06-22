@@ -7,6 +7,7 @@ import { Global } from "@emotion/react";
 import RootLayout from "./components/layout/RootLayout";
 import Register from "./pages/Register/Register";
 import Home from "./pages/Home/Home";
+import TodoList from "./pages/TodoList/TodoList";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route element={<ProtectedRoutes />} >
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/categories/:categoryName/todos" element={<TodoList />} />
           </Route>
         </Routes>
       </RootLayout>

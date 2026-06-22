@@ -4,8 +4,7 @@ export const layout = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    width: 100%;
-    height: 100%;
+    
     
     
 `;
@@ -21,7 +20,7 @@ export const profile = (url) => css`
     width: 34px;
     height: 34px;
     background-color: #dbdbdb;
-    background-image: url("${url}");
+    background-image: url(${url});
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -76,7 +75,7 @@ export const listGroup = (isEdit) => css`
             height: 60px;
             background-color: #ffffff;
             cursor: pointer;
-            overflow-x: hidden;
+            
 
             & > div {
                 transition: all 0.3s ease-in-out;
@@ -85,7 +84,7 @@ export const listGroup = (isEdit) => css`
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
-                width: 4{isEdit ? "40px" : "0px"};
+                width: ${isEdit ? "40px" : "0px"};
                 height: 100%;
                 overflow: hidden;
 

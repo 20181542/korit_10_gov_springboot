@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance } from "./axiosInstance"
 
 export const getCategoriesRequest = async () => {
     try {
@@ -18,36 +18,29 @@ export const getCategoryColorsAndIcons = async () => {
     }
 }
 
-
 export const getNotCompletedCount = async () => {
-
     try {
         const response = await axiosInstance.get("/api/categories/count/completion/not");
         return response.data;
-    } catch (error) {
-        return error.response.data
+    } catch(error) {
+        return error.response.data;
     }
-
 }
 
 export const registerCategory = async (data) => {
-
     try {
         const response = await axiosInstance.post("/api/categories", data);
         return response.data;
-    } catch (error) {
-        return error.response.data
+    } catch(error) {
+        return error.response.data;
     }
-
 }
 
-export const deleteCategory = async () => {
-
+export const deleteCategory = async (id) => {
     try {
-        const response = await axiosInstance.delete(`api/categories/${id}`);
+        const response = await axiosInstance.delete(`/api/categories/${id}`);
         return response.data;
-    } catch (error) {
-        return error.response.data
+    } catch(error) {
+        return error.response.data;
     }
-
 }

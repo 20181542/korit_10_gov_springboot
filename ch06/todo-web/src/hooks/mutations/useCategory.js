@@ -7,7 +7,7 @@ export const useCategoryRegisterMutation = () => {
     return useMutation({
 
         mutationFn: (data) => {
-            registerCategory(data);
+            return registerCategory(data);
         },
         onSuccess: (response) => {
             queryClient.invalidateQueries(["categories"]);
@@ -23,7 +23,7 @@ export const useCategoryDeleteMutation = (id) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: () => {
+        mutationFn: (id) => {
             deleteCategory(id);
         },
         onSuccess: (response) => {

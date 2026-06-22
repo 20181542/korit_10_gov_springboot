@@ -32,7 +32,7 @@ export function PublicOnlyRoute() {
         return <></>
     }
     
-    const isLoggedIn = meQuery.data.success;
+    const isLoggedIn = meQuery.data?.success;
 
     
 
